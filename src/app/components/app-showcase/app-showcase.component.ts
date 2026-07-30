@@ -1,14 +1,19 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 interface TabScreen {
   id: string;
   name: string;
+  nameAr: string;
   icon: string;
   badge: string;
+  badgeAr: string;
   title: string;
+  titleAr: string;
   description: string;
-  metrics: { label: string; value: string }[];
+  descriptionAr: string;
+  metrics: { label: string; labelAr: string; value: string }[];
 }
 
 @Component({
@@ -21,11 +26,19 @@ interface TabScreen {
         
         <div class="section-header">
           <div class="badge-pill badge-purple">
-            <i class="fa-solid fa-mobile-screen-button"></i> Interactive Experience
+            <i class="fa-solid fa-mobile-screen-button"></i>
+            {{ langService.isArabic() ? 'تجربة تفاعلية مباشرة' : 'Interactive Experience' }}
           </div>
-          <h2>Explore The Mobile Interface <span class="gradient-text-purple">In Action</span></h2>
+          <h2 *ngIf="!langService.isArabic()">
+            Explore The Mobile Interface <span class="gradient-text-purple">In Action</span>
+          </h2>
+          <h2 *ngIf="langService.isArabic()">
+            استكشف واجهة التطبيق <span class="gradient-text-purple">بالفعل والتجربة</span>
+          </h2>
           <p>
-            Experience how seamless fitness tracking feels. Switch between app views to preview GetFit's high-performance user interface.
+            {{ langService.isArabic()
+                ? 'جرب مدى سهولة تتبع التمارين وتصوير الوجبات بالكاميرا وتبديل الأكل المخصص. تنقل بين الشاشات لمعاينة واجهة GetFit عالية الأداء.'
+                : "Experience how seamless fitness tracking feels. Switch between app views to preview GetFit's high-performance user interface." }}
           </p>
         </div>
 
@@ -38,7 +51,7 @@ interface TabScreen {
             (click)="selectTab(tab.id)"
           >
             <i [class]="tab.icon"></i>
-            <span>{{ tab.name }}</span>
+            <span>{{ langService.isArabic() ? tab.nameAr : tab.name }}</span>
           </button>
         </div>
 
@@ -46,14 +59,20 @@ interface TabScreen {
         <div class="showcase-content glass-card">
           <!-- Text Details Column -->
           <div class="showcase-info">
-            <span class="badge-pill badge-red mb-3">{{ currentTab().badge }}</span>
-            <h3 class="tab-heading">{{ currentTab().title }}</h3>
-            <p class="tab-desc">{{ currentTab().description }}</p>
+            <span class="badge-pill badge-red mb-3">
+              {{ langService.isArabic() ? currentTab().badgeAr : currentTab().badge }}
+            </span>
+            <h3 class="tab-heading">
+              {{ langService.isArabic() ? currentTab().titleAr : currentTab().title }}
+            </h3>
+            <p class="tab-desc">
+              {{ langService.isArabic() ? currentTab().descriptionAr : currentTab().description }}
+            </p>
 
             <div class="tab-metrics-grid">
               <div *ngFor="let m of currentTab().metrics" class="metric-box">
                 <span class="m-val">{{ m.value }}</span>
-                <span class="m-lbl">{{ m.label }}</span>
+                <span class="m-lbl">{{ langService.isArabic() ? m.labelAr : m.label }}</span>
               </div>
             </div>
           </div>
@@ -68,22 +87,22 @@ interface TabScreen {
                 <!-- 1. WORKOUT SCREEN VIEW -->
                 <div *ngIf="activeTabId() === 'workout'" class="screen-view animate-fade">
                   <div class="app-bar">
-                    <span class="app-title">Workout Routine</span>
-                    <span class="status-badge">Smart Engine</span>
+                    <span class="app-title">{{ langService.isArabic() ? 'جدول التمارين' : 'Workout Routine' }}</span>
+                    <span class="status-badge">{{ langService.isArabic() ? 'المحرك الذكي' : 'Smart Engine' }}</span>
                   </div>
                   
                   <div class="routine-banner">
-                    <div class="routine-tag">Day 1 • Push Day</div>
-                    <h4>Hypertrophy Chest & Shoulders</h4>
-                    <p>6 Exercises • 55 Mins</p>
+                    <div class="routine-tag">{{ langService.isArabic() ? 'اليوم 1 • تمارين الدفع' : 'Day 1 • Push Day' }}</div>
+                    <h4>{{ langService.isArabic() ? 'الصدر والكتف الأمامي' : 'Hypertrophy Chest & Shoulders' }}</h4>
+                    <p>{{ langService.isArabic() ? '6 تمارين • 55 دقيقة' : '6 Exercises • 55 Mins' }}</p>
                   </div>
 
                   <div class="ex-list">
                     <div class="ex-item">
                       <div class="ex-num">1</div>
                       <div class="ex-details">
-                        <h5>Incline Dumbbell Press</h5>
-                        <p>4 Sets x 10 Reps • 28 kg</p>
+                        <h5>{{ langService.isArabic() ? 'ضغط بنش مائل بالدنابل' : 'Incline Dumbbell Press' }}</h5>
+                        <p>{{ langService.isArabic() ? '4 مجاميع x 10 تكرار • 28 كجم' : '4 Sets x 10 Reps • 28 kg' }}</p>
                       </div>
                       <i class="fa-solid fa-circle-check done-icon"></i>
                     </div>
@@ -91,17 +110,19 @@ interface TabScreen {
                     <div class="ex-item active">
                       <div class="ex-num">2</div>
                       <div class="ex-details">
-                        <h5>Barbell Bench Press</h5>
-                        <p>3 Sets x 8 Reps • 80 kg</p>
+                        <h5>{{ langService.isArabic() ? 'ضغط بنش مستوي بالبار' : 'Barbell Bench Press' }}</h5>
+                        <p>{{ langService.isArabic() ? '3 مجاميع x 8 تكرار • 80 كجم' : '3 Sets x 8 Reps • 80 kg' }}</p>
                       </div>
-                      <span class="substitute-pill"><i class="fa-solid fa-shuffle"></i> Swap</span>
+                      <span class="substitute-pill">
+                        <i class="fa-solid fa-shuffle"></i> {{ langService.isArabic() ? 'تبديل' : 'Swap' }}
+                      </span>
                     </div>
 
                     <div class="ex-item">
                       <div class="ex-num">3</div>
                       <div class="ex-details">
-                        <h5>Cable Chest Flyes</h5>
-                        <p>3 Sets x 12 Reps • 15 kg</p>
+                        <h5>{{ langService.isArabic() ? 'تفتيح صدر كابل' : 'Cable Chest Flyes' }}</h5>
+                        <p>{{ langService.isArabic() ? '3 مجاميع x 12 تكرار • 15 كجم' : '3 Sets x 12 Reps • 15 kg' }}</p>
                       </div>
                       <i class="fa-regular fa-circle pending-icon"></i>
                     </div>
@@ -111,8 +132,8 @@ interface TabScreen {
                 <!-- 2. STEPS SCREEN VIEW -->
                 <div *ngIf="activeTabId() === 'steps'" class="screen-view animate-fade">
                   <div class="app-bar">
-                    <span class="app-title">Step Dashboard</span>
-                    <span class="status-badge mint">Pedometer Live</span>
+                    <span class="app-title">{{ langService.isArabic() ? 'لوحة الخطوات' : 'Step Dashboard' }}</span>
+                    <span class="status-badge mint">{{ langService.isArabic() ? 'العداد مباشر' : 'Pedometer Live' }}</span>
                   </div>
 
                   <div class="big-step-widget">
@@ -120,7 +141,7 @@ interface TabScreen {
                       <div class="step-circle-inner">
                         <i class="fa-solid fa-shoe-prints step-icon"></i>
                         <span class="step-count">10,480</span>
-                        <span class="step-target">Goal: 10,000</span>
+                        <span class="step-target">{{ langService.isArabic() ? 'الهدف: 10,000' : 'Goal: 10,000' }}</span>
                       </div>
                     </div>
                   </div>
@@ -128,49 +149,49 @@ interface TabScreen {
                   <div class="step-stats-row">
                     <div class="s-box">
                       <i class="fa-solid fa-fire text-red"></i>
-                      <span>780 kcal</span>
-                      <small>Burned</small>
+                      <span>780 {{ langService.isArabic() ? 'سعرة' : 'kcal' }}</span>
+                      <small>{{ langService.isArabic() ? 'المحروق' : 'Burned' }}</small>
                     </div>
                     <div class="s-box">
                       <i class="fa-solid fa-route text-cyan"></i>
-                      <span>7.8 km</span>
-                      <small>Distance</small>
+                      <span>7.8 {{ langService.isArabic() ? 'كم' : 'km' }}</span>
+                      <small>{{ langService.isArabic() ? 'المسافة' : 'Distance' }}</small>
                     </div>
                     <div class="s-box">
                       <i class="fa-solid fa-clock text-gold"></i>
-                      <span>85 mins</span>
-                      <small>Active</small>
+                      <span>85 {{ langService.isArabic() ? 'دقيقة' : 'mins' }}</span>
+                      <small>{{ langService.isArabic() ? 'نشط' : 'Active' }}</small>
                     </div>
                   </div>
                 </div>
 
-                <!-- 3. NUTRITION SCREEN VIEW -->
+                <!-- 3. NUTRITION SCREEN VIEW (AI CAMERA & TEXT SCANNER) -->
                 <div *ngIf="activeTabId() === 'nutrition'" class="screen-view animate-fade">
                   <div class="app-bar">
-                    <span class="app-title">Macro Tracker</span>
-                    <span class="status-badge purple">Smart Diet</span>
+                    <span class="app-title">{{ langService.isArabic() ? 'كاميرا السعرات بالذكاء الاصطناعي' : 'AI Food Camera Scanner' }}</span>
+                    <span class="status-badge purple">{{ langService.isArabic() ? 'تصوير الأكل' : 'Camera AI' }}</span>
                   </div>
 
-                  <div class="calorie-summary-card">
-                    <div class="c-title">Daily Calorie Target</div>
-                    <div class="c-val">2,150 / 2,600 kcal</div>
+                  <div class="calorie-summary-card" style="border: 1px solid rgba(155, 93, 229, 0.3); background: rgba(155, 93, 229, 0.08);">
+                    <div class="c-title">{{ langService.isArabic() ? 'تحليل الكاميرا / النص التلقائي' : 'AI Camera Scan Result' }}</div>
+                    <div class="c-val" style="color: var(--accent-purple);">650 kcal</div>
                     <div class="macro-bars-stack">
-                      <div class="m-segment protein" style="width: 40%"></div>
+                      <div class="m-segment protein" style="width: 45%"></div>
                       <div class="m-segment carbs" style="width: 35%"></div>
-                      <div class="m-segment fats" style="width: 25%"></div>
+                      <div class="m-segment fats" style="width: 20%"></div>
                     </div>
                     <div class="macro-legend">
-                      <span><i class="dot protein"></i> Protein 160g</span>
-                      <span><i class="dot carbs"></i> Carbs 210g</span>
-                      <span><i class="dot fats"></i> Fats 65g</span>
+                      <span><i class="dot protein"></i> {{ langService.isArabic() ? 'بروتين 52ج' : 'Protein 52g' }}</span>
+                      <span><i class="dot carbs"></i> {{ langService.isArabic() ? 'نشويات 45ج' : 'Carbs 45g' }}</span>
+                      <span><i class="dot fats"></i> {{ langService.isArabic() ? 'دهون 14ج' : 'Fats 14g' }}</span>
                     </div>
                   </div>
 
                   <div class="meal-log-item">
-                    <div class="m-icon"><i class="fa-solid fa-drumstick-bite"></i></div>
+                    <div class="m-icon"><i class="fa-solid fa-camera"></i></div>
                     <div>
-                      <h6>Grilled Chicken & Quinoa Bowl</h6>
-                      <p>Lunch • 650 kcal • 52g Protein</p>
+                      <h6>{{ langService.isArabic() ? 'صورة الطبق (دجاج + كينوا)' : 'Plate Photo (Chicken & Quinoa)' }}</h6>
+                      <p>{{ langService.isArabic() ? 'تم حساب السعرات والمكرو بالكاميرا' : 'Scanned by AI Vision • 650 kcal' }}</p>
                     </div>
                   </div>
                 </div>
@@ -178,8 +199,8 @@ interface TabScreen {
                 <!-- 4. WATER SCREEN VIEW -->
                 <div *ngIf="activeTabId() === 'water'" class="screen-view animate-fade">
                   <div class="app-bar">
-                    <span class="app-title">Hydration Log</span>
-                    <span class="status-badge cyan">Goal 80%</span>
+                    <span class="app-title">{{ langService.isArabic() ? 'سجل المياه' : 'Hydration Log' }}</span>
+                    <span class="status-badge cyan">{{ langService.isArabic() ? 'الهدف 80%' : 'Goal 80%' }}</span>
                   </div>
 
                   <div class="water-glass-widget">
@@ -187,50 +208,60 @@ interface TabScreen {
                       <div class="wave-animation"></div>
                       <div class="water-val-text">
                         <i class="fa-solid fa-droplet drop-icon"></i>
-                        <span>2,400 ml</span>
-                        <small>Target: 3,000 ml</small>
+                        <span>2,400 {{ langService.isArabic() ? 'مل' : 'ml' }}</span>
+                        <small>{{ langService.isArabic() ? 'الهدف: 3,000 مل' : 'Target: 3,000 ml' }}</small>
                       </div>
                     </div>
                   </div>
 
                   <div class="quick-add-row">
-                    <button class="add-btn">+ 250ml</button>
-                    <button class="add-btn">+ 500ml</button>
-                    <button class="add-btn">+ 750ml</button>
+                    <button class="add-btn">+ 250{{ langService.isArabic() ? 'مل' : 'ml' }}</button>
+                    <button class="add-btn">+ 500{{ langService.isArabic() ? 'مل' : 'ml' }}</button>
+                    <button class="add-btn">+ 750{{ langService.isArabic() ? 'مل' : 'ml' }}</button>
                   </div>
                 </div>
 
-                <!-- 5. LEADERBOARD SCREEN VIEW -->
-                <div *ngIf="activeTabId() === 'leaderboard'" class="screen-view animate-fade">
+                <!-- 5. CUSTOM DIET PLAN SCREEN VIEW -->
+                <div *ngIf="activeTabId() === 'diet-plan'" class="screen-view animate-fade">
                   <div class="app-bar">
-                    <span class="app-title">Global Leaderboard</span>
-                    <span class="status-badge gold">Week 30</span>
+                    <span class="app-title">{{ langService.isArabic() ? 'نظام تغذية وتبديل الأكل' : 'Custom Diet & Swaps' }}</span>
+                    <span class="status-badge gold">{{ langService.isArabic() ? 'تبديل ذكي' : 'Smart Swap' }}</span>
                   </div>
 
-                  <div class="podium-row">
-                    <div class="podium-place p2">
-                      <span class="rank-num">2</span>
-                      <span class="p-name">Sarah M.</span>
-                      <span class="p-pts">14,200 pts</span>
-                    </div>
-                    <div class="podium-place p1">
-                      <i class="fa-solid fa-crown crown-gold"></i>
-                      <span class="rank-num">1</span>
-                      <span class="p-name">Alex J.</span>
-                      <span class="p-pts">16,850 pts</span>
-                    </div>
-                    <div class="podium-place p3">
-                      <span class="rank-num">3</span>
-                      <span class="p-name">David K.</span>
-                      <span class="p-pts">13,100 pts</span>
-                    </div>
+                  <div class="routine-banner" style="background: linear-gradient(135deg, rgba(255, 215, 0, 0.2) 0%, rgba(26, 28, 46, 0.8) 100%); border-color: rgba(255, 215, 0, 0.3);">
+                    <div class="routine-tag" style="color: var(--accent-gold);">{{ langService.isArabic() ? 'هدف السعرات: 2,200 سعرة' : 'Calorie Goal: 2,200 kcal' }}</div>
+                    <h4 style="font-size: 0.88rem; margin: 0.2rem 0;">{{ langService.isArabic() ? 'دايت مخصص + إمكانية تبديل أي صنف' : 'Custom Diet + Instant Food Swaps' }}</h4>
+                    <p>{{ langService.isArabic() ? 'اختيار ما تحبه وتبديل أي وجبة بضغطة زر' : 'Choose liked foods & swap any item easily' }}</p>
                   </div>
 
-                  <div class="rank-list">
-                    <div class="rank-row current-user">
-                      <span>#1 (You)</span>
-                      <span>Alex J.</span>
-                      <span class="badge-gold">Gold Medal</span>
+                  <div class="ex-list">
+                    <div class="ex-item">
+                      <div class="ex-num"><i class="fa-solid fa-utensils text-gold" style="font-size: 0.8rem;"></i></div>
+                      <div class="ex-details">
+                        <h5>{{ langService.isArabic() ? 'وجبة الإفطار (أكل تحبه)' : 'Breakfast (Favorite Food)' }}</h5>
+                        <p>{{ langService.isArabic() ? 'بيض مسلوق + شوفان + زبادي' : 'Oats + Eggs + Greek Yogurt' }}</p>
+                      </div>
+                      <i class="fa-solid fa-heart text-red" style="font-size: 0.85rem; margin-left: auto;"></i>
+                    </div>
+
+                    <div class="ex-item active" style="border-color: var(--accent-gold); background: rgba(255, 215, 0, 0.08);">
+                      <div class="ex-num"><i class="fa-solid fa-drumstick-bite text-gold" style="font-size: 0.8rem;"></i></div>
+                      <div class="ex-details">
+                        <h5>{{ langService.isArabic() ? 'وجبة الغداء (تم تبديل الصنف)' : 'Lunch (Swapped Meal)' }}</h5>
+                        <p>{{ langService.isArabic() ? 'سمك مشوي بدلاً من الدجاج' : 'Grilled Fish instead of Chicken' }}</p>
+                      </div>
+                      <span class="substitute-pill" style="background: rgba(255, 215, 0, 0.2); color: var(--accent-gold);">
+                        <i class="fa-solid fa-shuffle"></i> {{ langService.isArabic() ? 'تبديل بضغطة' : 'Swapped' }}
+                      </span>
+                    </div>
+
+                    <div class="ex-item">
+                      <div class="ex-num"><i class="fa-solid fa-apple-whole text-mint" style="font-size: 0.8rem;"></i></div>
+                      <div class="ex-details">
+                        <h5>{{ langService.isArabic() ? 'وجبة العشاء (أكل مخصص)' : 'Dinner (Custom Meal)' }}</h5>
+                        <p>{{ langService.isArabic() ? 'سلاطة تونة بجبن قريش' : 'Tuna Salad with Cottage Cheese' }}</p>
+                      </div>
+                      <i class="fa-solid fa-circle-check done-icon"></i>
                     </div>
                   </div>
                 </div>
@@ -471,17 +502,6 @@ interface TabScreen {
     .quick-add-row { display: flex; gap: 0.4rem; justify-content: center; }
     .add-btn { background: rgba(76,201,240,0.15); border: 1px solid rgba(76,201,240,0.3); color: var(--accent-cyan); padding: 0.4rem 0.6rem; border-radius: 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer; }
 
-    .podium-row { display: flex; justify-content: center; align-items: flex-end; gap: 0.5rem; margin: 1rem 0; }
-    .podium-place { display: flex; flex-direction: column; align-items: center; padding: 0.5rem; border-radius: 10px; background: rgba(255,255,255,0.04); }
-    .podium-place.p1 { background: rgba(255,215,0,0.15); border: 1px solid var(--accent-gold); transform: translateY(-10px); }
-    .crown-gold { color: var(--accent-gold); font-size: 0.8rem; margin-bottom: 0.2rem; }
-    .rank-num { font-weight: 800; font-size: 0.9rem; }
-    .p-name { font-size: 0.65rem; }
-    .p-pts { font-size: 0.6rem; color: var(--text-muted); }
-
-    .rank-list { margin-top: 0.5rem; }
-    .rank-row { display: flex; justify-content: space-between; padding: 0.6rem; background: rgba(255,215,0,0.1); border-radius: 8px; font-size: 0.7rem; font-weight: 700; }
-
     @media (max-width: 992px) {
       .showcase-content {
         grid-template-columns: 1fr;
@@ -491,67 +511,88 @@ interface TabScreen {
   `]
 })
 export class AppShowcaseComponent {
+  langService = inject(LanguageService);
   activeTabId = signal<string>('workout');
 
   tabs: TabScreen[] = [
     {
       id: 'workout',
       name: 'Workout Engine',
+      nameAr: 'محرك التمارين',
       icon: 'fa-solid fa-dumbbell',
       badge: 'Smart Workout Planner',
+      badgeAr: 'مخطط التمارين الذكي',
       title: 'Hyper-Personalized Workout Programs',
+      titleAr: 'برامج تمارين مخصصة بدقة فائقة',
       description: 'Generates progressive muscle building, fat loss, or endurance routines. Swap out exercises effortlessly with intelligent substitution algorithms.',
+      descriptionAr: 'يولد جداول بناء عضلات أو خسارة دهون أو لياقة بدنية. يمكنك تبديل التمارين بسهولة بفضل خوارزميات التبديل الذكية.',
       metrics: [
-        { label: 'Built-in Exercises', value: '250+' },
-        { label: 'Rest Timer Sync', value: '100%' }
+        { label: 'Built-in Exercises', labelAr: 'تمرين مدمج بالخطوات', value: '250+' },
+        { label: 'Rest Timer Sync', labelAr: 'مزامنة مؤقت الراحة', value: '100%' }
       ]
     },
     {
       id: 'steps',
       name: 'Step Tracker',
+      nameAr: 'تتبع الخطوات',
       icon: 'fa-solid fa-shoe-prints',
       badge: 'Real-Time Pedometer',
+      badgeAr: 'عداد خطوات مباشر',
       title: 'Precision Sensor Step Counting',
+      titleAr: 'حساب خطوات دقيق بالحساسات',
       description: 'Track daily steps, calories burned, and total distance walked without draining your smartphone battery. Integrates with Google Fit & Apple Health.',
+      descriptionAr: 'تتبع الخطوات اليومية، السعرات المحروقة، والمسافات دون استنزاف بطارية الهاتف مع مزامنة كاملة.',
       metrics: [
-        { label: 'Battery Overhead', value: '< 1%' },
-        { label: 'Sensor Accuracy', value: '99.4%' }
+        { label: 'Battery Overhead', labelAr: 'استهلاك البطارية', value: '< 1%' },
+        { label: 'Sensor Accuracy', labelAr: 'دقة الحساسات', value: '99.4%' }
       ]
     },
     {
       id: 'nutrition',
-      name: 'Macro Tracker',
-      icon: 'fa-solid fa-apple-whole',
-      badge: 'Smart Diet Logger',
-      title: 'Balanced Nutrition & Calorie Tracking',
-      description: 'Track your daily macronutrient ratio with automated target suggestions based on your target weight goals and workout activity level.',
+      name: 'AI Calorie Scanner',
+      nameAr: 'كاميرا السعرات بالذكاء الاصطناعي',
+      icon: 'fa-solid fa-camera-retro',
+      badge: 'AI Food Scanner',
+      badgeAr: 'ماسح وجبات بالكاميرا والنص',
+      title: 'AI Food Camera & Text Calorie Scanner',
+      titleAr: 'صوّر وجبتك بالكاميرا أو اكتب مكوناتها نصياً',
+      description: 'Snap a photo of your food or write its ingredients in plain text. GetFit’s AI vision engine automatically recognizes all food components, calculates total calories, and breaks down protein, carbs, and fats with high precision.',
+      descriptionAr: 'التقط صورة لطبقك بالكاميرا أو اكتب مكونات الوجبة نصياً، وسيقوم الذكاء الاصطناعي فوراً بفك شفرة مكونات الأكل، وحساب إجمالي السعرات الحرارية وتقسيم البروتين والدهون والنشويات بدقة عالية.',
       metrics: [
-        { label: 'Nutrient Accuracy', value: 'Macro-Exact' },
-        { label: 'Meal Suggestions', value: 'Instant' }
+        { label: 'Photo Recognition', labelAr: 'تعرف فوري بالكاميرا والصور', value: 'Instant' },
+        { label: 'Macro Accuracy', labelAr: 'دقة حساب السعرات والماكروز', value: '100%' }
       ]
     },
     {
       id: 'water',
       name: 'Hydration',
+      nameAr: 'تتبع المياه',
       icon: 'fa-solid fa-droplet',
       badge: 'Water Logger',
+      badgeAr: 'سجل شرب المياه',
       title: 'Intelligent Water Intake Reminders',
+      titleAr: 'تنبيهات ذكية لشرب المياه',
       description: 'Never forget to hydrate. Log your water intake with one-tap quick action buttons and receive smart reminders timed around your workout schedule.',
+      descriptionAr: 'لا تنسَ شرب المياه أبداً. سجل كميات المياه بضغطة واحدة واحصل على تنبيهات ذكية تناسب مواعيد تمارينك.',
       metrics: [
-        { label: 'Quick Log Presets', value: '1-Tap' },
-        { label: 'Optimal Hydration', value: 'Guaranteed' }
+        { label: 'Quick Log Presets', labelAr: 'إضافة بضغطة واحدة', value: '1-Tap' },
+        { label: 'Optimal Hydration', labelAr: 'تروية مثالية', value: 'Guaranteed' }
       ]
     },
     {
-      id: 'leaderboard',
-      name: 'Leaderboard',
-      icon: 'fa-solid fa-trophy',
-      badge: 'Social Competition',
-      title: 'Rank Up & Unlock Achievement Medals',
-      description: 'Turn fitness into a sport. Compete against friends and global athletes, climb the ranks, and earn Gold, Silver, and Bronze achievement trophies.',
+      id: 'diet-plan',
+      name: 'Custom Diet & Swaps',
+      nameAr: 'تغذية مخصصة وتبديل وجبات',
+      icon: 'fa-solid fa-utensils',
+      badge: 'Customized Diet & Meal Swapping',
+      badgeAr: 'نظام غذائي مخصص + تبديل الأكل',
+      title: 'Tailored Diet Plans + Instant Meal Swapping',
+      titleAr: 'أنظمة تغذية مخصصة + تبديل أي صنف بضغطة زر',
+      description: 'Create a fully tailored diet plan designed around your calorie targets and fitness goals. Select foods you love, exclude foods you dislike, and easily swap out any meal item for healthy, equivalent alternatives at any time with a single tap.',
+      descriptionAr: 'صمم خطتك الغذائية المخصصة بدقة حسب هدفك البدني وسعراتك اليومية. أضف وجباتك وأطعمتك المفضلة واستبعد الأطعمة التي لا تحبها، مع إمكانية تبديل أي صنف وجبة بأطعمة صحية أخرى متكافئة في أي وقت بضغطة زر واحدة.',
       metrics: [
-        { label: 'Weekly Leagues', value: 'Active' },
-        { label: 'Global Rank Update', value: 'Real-Time' }
+        { label: 'Food Preferences', labelAr: 'تضمين المفصل واستبعاد الممنوع', value: '100%' },
+        { label: 'Flexible Meal Swaps', labelAr: 'تبديل فوري لأي صنف', value: '1-Tap' }
       ]
     }
   ];

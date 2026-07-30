@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-footer',
@@ -27,68 +28,50 @@ import { CommonModule } from '@angular/common';
             </a>
 
             <p class="brand-desc">
-              High-performance, offline-first mobile fitness app. Built for step tracking, workout programming, macro nutrition, and social leaderboard competition.
+              {{ langService.isArabic()
+                  ? 'تطبيق لياقة بدنية عالي الأداء للموبايل. مصمم لتتبع الخطوات، التمارين الذكية، التغذية والمكرو، والمنافسة الجماعية.'
+                  : 'High-performance mobile fitness app. Built for step tracking, workout programming, macro nutrition, and social leaderboard competition.' }}
             </p>
-
-            <div class="social-links">
-              <a href="#" aria-label="Twitter"
-                ><i class="fa-brands fa-x-twitter"></i
-              ></a>
-              <a href="#" aria-label="Instagram"
-                ><i class="fa-brands fa-instagram"></i
-              ></a>
-              <a href="#" aria-label="YouTube"
-                ><i class="fa-brands fa-youtube"></i
-              ></a>
-              <a href="#" aria-label="GitHub"
-                ><i class="fa-brands fa-github"></i
-              ></a>
-            </div>
           </div>
 
           <!-- Column 2: Navigation -->
           <div class="footer-col">
-            <h4>App Navigation</h4>
+            <h4>{{ langService.isArabic() ? 'خريطة الموقع' : 'App Navigation' }}</h4>
             <ul>
-              <li><a href="#features">Key Features</a></li>
-              <li><a href="#showcase">Interactive Demo</a></li>
-              <li><a href="#engine">Smart Engine</a></li>
-              <li><a href="#testimonials">User Reviews</a></li>
-              <li><a href="#pre-register">Pre-Register Now</a></li>
+              <li><a href="#features">{{ langService.isArabic() ? 'المميزات الأساسية' : 'Core Features' }}</a></li>
+              <li><a href="#showcase">{{ langService.isArabic() ? 'تفاعلي والتصميم' : 'Interactive Demo' }}</a></li>
+              <li><a href="#pricing">{{ langService.isArabic() ? 'الأسعار والخطط' : 'Pricing Plans' }}</a></li>
+              <li><a href="#pre-register">{{ langService.isArabic() ? 'احجز مكانك الآن' : 'Pre-Register Now' }}</a></li>
             </ul>
           </div>
 
-          <!-- Column 3: Features -->
+          <!-- Column 3: Support & Policies -->
           <div class="footer-col">
-            <h4>Core Features</h4>
+            <h4>{{ langService.isArabic() ? 'الاسترجاع والدعم' : 'Refund & Support' }}</h4>
             <ul>
-              <li><a href="#features">Smart Routine Engine</a></li>
-              <li><a href="#features">Precision Step Counter</a></li>
-              <li><a href="#features">Macro & Calorie Planner</a></li>
-              <li><a href="#features">Smart Hydration Tracker</a></li>
-              <li><a href="#features">Global Social Leaderboard</a></li>
-            </ul>
-          </div>
-
-          <!-- Column 4: Support & Legal -->
-          <div class="footer-col">
-            <h4>Privacy & Legal</h4>
-            <ul>
-              <li><a href="#">Privacy Policy</a></li>
-              <li><a href="#">Terms of Service</a></li>
-              <li><a href="#">Security & Data Policy</a></li>
-              <li><a href="#">Support Help Center</a></li>
-              <li><a href="#">Contact Engineering</a></li>
+              <li><a href="#pricing">{{ langService.isArabic() ? 'سياسة الاسترجاع والرد' : 'Refund & Return Policy' }}</a></li>
+              <li><a href="#pricing">{{ langService.isArabic() ? 'الأسعار والاشتراكات' : 'Pricing & Billing' }}</a></li>
             </ul>
           </div>
         </div>
 
         <div class="footer-bottom">
           <p>
-            © 2026 GetFit App Inc. All rights reserved. Designed for peak human performance.
+            {{ langService.isArabic() 
+                ? '© 2026 جميع الحقوق محفوظة لشركة GetFit Technologies. مسجلة في جمهورية مصر العربية.' 
+                : '© 2026 GetFit Technologies S.A.E. All rights reserved. Registered in Egypt.' }}
           </p>
+
+          <div class="payment-methods-inline">
+            <span class="pay-tag"><i class="fa-brands fa-cc-visa"></i> Visa</span>
+            <span class="pay-tag"><i class="fa-brands fa-cc-mastercard"></i> Mastercard</span>
+            <span class="pay-tag"><i class="fa-solid fa-credit-card"></i> {{ langService.isArabic() ? 'ميزة' : 'Meeza' }}</span>
+            <span class="pay-tag"><i class="fa-solid fa-lock"></i> Kashier Secured</span>
+          </div>
+
           <div class="bottom-badge">
-            <i class="fa-solid fa-shield-halved text-mint"></i> Offline-First Architecture
+            <i class="fa-solid fa-shield-halved text-mint"></i>
+            {{ langService.isArabic() ? 'بنية بيانات آمنة ومشفرة' : 'Secure Data Architecture' }}
           </div>
         </div>
       </div>
@@ -105,9 +88,9 @@ import { CommonModule } from '@angular/common';
 
       .footer-grid {
         display: grid;
-        grid-template-columns: 1.5fr 1fr 1fr 1fr;
+        grid-template-columns: 1.8fr 1fr 1fr;
         gap: 3rem;
-        margin-bottom: 4rem;
+        margin-bottom: 3rem;
       }
 
       .logo {
@@ -144,31 +127,6 @@ import { CommonModule } from '@angular/common';
         margin-bottom: 1.5rem;
       }
 
-      .social-links {
-        display: flex;
-        gap: 0.8rem;
-      }
-
-      .social-links a {
-        width: 38px;
-        height: 38px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text-primary);
-        transition: all 0.3s ease;
-      }
-
-      .social-links a:hover {
-        background: var(--accent-red);
-        border-color: var(--accent-red);
-        color: #ffffff;
-        transform: translateY(-3px);
-      }
-
       .footer-col h4 {
         font-size: 1.05rem;
         margin-bottom: 1.25rem;
@@ -180,6 +138,7 @@ import { CommonModule } from '@angular/common';
         display: flex;
         flex-direction: column;
         gap: 0.8rem;
+        padding: 0;
       }
 
       .footer-col a {
@@ -199,6 +158,25 @@ import { CommonModule } from '@angular/common';
         border-top: 1px solid rgba(255, 255, 255, 0.06);
         font-size: 0.85rem;
         color: var(--text-muted);
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .payment-methods-inline {
+        display: flex;
+        gap: 0.6rem;
+      }
+
+      .pay-tag {
+        background: rgba(255, 255, 255, 0.06);
+        padding: 0.25rem 0.6rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        color: #ffffff;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
       }
 
       .bottom-badge {
@@ -228,4 +206,6 @@ import { CommonModule } from '@angular/common';
     `,
   ],
 })
-export class FooterComponent {}
+export class FooterComponent {
+  langService = inject(LanguageService);
+}

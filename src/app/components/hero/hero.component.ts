@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-hero',
@@ -16,16 +17,23 @@ import { CommonModule } from '@angular/common';
         <!-- Hero Text Column -->
         <div class="hero-content">
           <div class="badge-pill badge-red hero-badge">
-            <i class="fa-solid fa-bolt"></i> Smart Offline-First Fitness Mobile App
+            <i class="fa-solid fa-bolt"></i>
+            {{ langService.isArabic() ? 'تطبيق اللياقة البدنية الأحدث بالذكاء الاصطناعي' : 'Smart All-in-One Fitness Mobile App' }}
           </div>
 
-          <h1 class="hero-title">
+          <h1 class="hero-title" *ngIf="!langService.isArabic()">
             Redefine Your Body With <br>
             <span class="gradient-text-red">Maximum Precision</span> & Discipline
           </h1>
+          <h1 class="hero-title" *ngIf="langService.isArabic()">
+            أعد رسم معالم جسمك <br>
+            <span class="gradient-text-red">بأعلى دقة واحترافية</span> وانضباط
+          </h1>
 
           <p class="hero-subtitle">
-            GetFit is your all-in-one mobile companion for intelligent workout routines, precision step tracking, macro nutrition planning, smart hydration, and dynamic social leaderboards.
+            {{ langService.isArabic() 
+                ? 'تطبيق GetFit هو رفيقك الرياضي الشامل لتتبع الخطوات بدقة، تصميم التمارين بالذكاء الاصطناعي، حساب السعرات والمكرو، التروية الذكية، والمنافسة في لوحة الصدارة العالمية.' 
+                : 'GetFit is your all-in-one mobile companion for intelligent workout routines, precision step tracking, macro nutrition planning, smart hydration, and dynamic social leaderboards.' }}
           </p>
 
           <!-- Store Buttons (Coming Soon) -->
@@ -33,19 +41,19 @@ import { CommonModule } from '@angular/common';
             <a href="#pre-register" class="store-btn store-apple">
               <i class="fa-brands fa-apple store-icon"></i>
               <div class="store-text">
-                <span class="sub">COMING SOON ON</span>
+                <span class="sub">{{ langService.isArabic() ? 'قريباً على' : 'COMING SOON ON' }}</span>
                 <span class="main">App Store</span>
               </div>
-              <span class="store-tag">Pre-Register</span>
+              <span class="store-tag">{{ langService.isArabic() ? 'سجل الآن' : 'Pre-Register' }}</span>
             </a>
 
             <a href="#pre-register" class="store-btn store-google">
               <i class="fa-brands fa-google-play store-icon"></i>
               <div class="store-text">
-                <span class="sub">COMING SOON ON</span>
+                <span class="sub">{{ langService.isArabic() ? 'قريباً على' : 'COMING SOON ON' }}</span>
                 <span class="main">Google Play</span>
               </div>
-              <span class="store-tag">Pre-Register</span>
+              <span class="store-tag">{{ langService.isArabic() ? 'سجل الآن' : 'Pre-Register' }}</span>
             </a>
           </div>
 
@@ -53,17 +61,17 @@ import { CommonModule } from '@angular/common';
           <div class="hero-stats">
             <div class="stat-item">
               <div class="stat-num">4.9 <i class="fa-solid fa-star star-icon"></i></div>
-              <div class="stat-lbl">Beta Testers Rating</div>
+              <div class="stat-lbl">{{ langService.isArabic() ? 'تقييم المختبرين' : 'Beta Testers Rating' }}</div>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
               <div class="stat-num">50K+</div>
-              <div class="stat-lbl">Pre-Registered Athletes</div>
+              <div class="stat-lbl">{{ langService.isArabic() ? 'رياضي في الوصول المبكر' : 'Pre-Registered Athletes' }}</div>
             </div>
             <div class="stat-divider"></div>
             <div class="stat-item">
               <div class="stat-num">100%</div>
-              <div class="stat-lbl">Offline Data Privacy</div>
+              <div class="stat-lbl">{{ langService.isArabic() ? 'حماية وخصوصية البيانات' : 'Data Privacy & Security' }}</div>
             </div>
           </div>
         </div>
@@ -76,24 +84,24 @@ import { CommonModule } from '@angular/common';
             <div class="float-widget widget-steps">
               <div class="widget-icon mint"><i class="fa-solid fa-shoe-prints"></i></div>
               <div>
-                <div class="widget-val">8,420 steps</div>
-                <div class="widget-sub">Daily Goal: 84%</div>
+                <div class="widget-val">8,420 {{ langService.isArabic() ? 'خطوة' : 'steps' }}</div>
+                <div class="widget-sub">{{ langService.isArabic() ? 'الهدف اليومي: 84%' : 'Daily Goal: 84%' }}</div>
               </div>
             </div>
 
             <div class="float-widget widget-calories">
               <div class="widget-icon red"><i class="fa-solid fa-fire-flame-curved"></i></div>
               <div>
-                <div class="widget-val">640 kcal</div>
-                <div class="widget-sub">Burned Today</div>
+                <div class="widget-val">640 {{ langService.isArabic() ? 'سعرة' : 'kcal' }}</div>
+                <div class="widget-sub">{{ langService.isArabic() ? 'المحروق اليوم' : 'Burned Today' }}</div>
               </div>
             </div>
 
             <div class="float-widget widget-rank">
               <div class="widget-icon gold"><i class="fa-solid fa-trophy"></i></div>
               <div>
-                <div class="widget-val">#1 Leaderboard</div>
-                <div class="widget-sub">Weekly Streak 🔥</div>
+                <div class="widget-val">#1 {{ langService.isArabic() ? 'في المتصدرين' : 'Leaderboard' }}</div>
+                <div class="widget-sub">{{ langService.isArabic() ? 'إنجاز أسبوعي 🔥' : 'Weekly Streak 🔥' }}</div>
               </div>
             </div>
 
@@ -107,8 +115,8 @@ import { CommonModule } from '@angular/common';
                   <div class="app-brand-row">
                     <img src="./Gemini_Generated_Image_ecet84ecet84ecet.png" alt="Logo" class="mock-logo-img">
                     <div>
-                      <span class="greeting">Welcome back 👋</span>
-                      <h3 class="user-name">Alex Johnson</h3>
+                      <span class="greeting">{{ langService.isArabic() ? 'أهلاً بك مجدداً 👋' : 'Welcome back 👋' }}</span>
+                      <h3 class="user-name">{{ langService.isArabic() ? 'أحمد علي' : 'Alex Johnson' }}</h3>
                     </div>
                   </div>
                   <div class="user-avatar">
@@ -119,24 +127,24 @@ import { CommonModule } from '@angular/common';
                 <!-- Step Tracker Radial Widget -->
                 <div class="mock-card step-card">
                   <div class="card-title-row">
-                    <span>Daily Activity</span>
-                    <span class="tag-mint">Sensors Active</span>
+                    <span>{{ langService.isArabic() ? 'النشاط اليومي' : 'Daily Activity' }}</span>
+                    <span class="tag-mint">{{ langService.isArabic() ? 'الحساسات نشطة' : 'Sensors Active' }}</span>
                   </div>
                   <div class="radial-container">
                     <div class="radial-ring">
                       <div class="radial-inner">
                         <span class="radial-num">8,420</span>
-                        <span class="radial-unit">/ 10,000 steps</span>
+                        <span class="radial-unit">/ 10,000 {{ langService.isArabic() ? 'خطوة' : 'steps' }}</span>
                       </div>
                     </div>
                   </div>
                   <div class="activity-bars">
-                    <div class="bar-col"><div class="bar" style="height: 60%"></div><span>M</span></div>
-                    <div class="bar-col"><div class="bar" style="height: 85%"></div><span>T</span></div>
-                    <div class="bar-col"><div class="bar" style="height: 45%"></div><span>W</span></div>
-                    <div class="bar-col"><div class="bar active" style="height: 90%"></div><span>T</span></div>
-                    <div class="bar-col"><div class="bar" style="height: 70%"></div><span>F</span></div>
-                    <div class="bar-col"><div class="bar" style="height: 50%"></div><span>S</span></div>
+                    <div class="bar-col"><div class="bar" style="height: 60%"></div><span>{{ langService.isArabic() ? 'ن' : 'M' }}</span></div>
+                    <div class="bar-col"><div class="bar" style="height: 85%"></div><span>{{ langService.isArabic() ? 'ث' : 'T' }}</span></div>
+                    <div class="bar-col"><div class="bar" style="height: 45%"></div><span>{{ langService.isArabic() ? 'ر' : 'W' }}</span></div>
+                    <div class="bar-col"><div class="bar active" style="height: 90%"></div><span>{{ langService.isArabic() ? 'خ' : 'T' }}</span></div>
+                    <div class="bar-col"><div class="bar" style="height: 70%"></div><span>{{ langService.isArabic() ? 'ج' : 'F' }}</span></div>
+                    <div class="bar-col"><div class="bar" style="height: 50%"></div><span>{{ langService.isArabic() ? 'س' : 'S' }}</span></div>
                   </div>
                 </div>
 
@@ -145,8 +153,8 @@ import { CommonModule } from '@angular/common';
                   <div class="workout-info">
                     <div class="w-icon"><i class="fa-solid fa-dumbbell"></i></div>
                     <div>
-                      <h4>Chest & Triceps Hypertrophy</h4>
-                      <p>Smart Generator • 45 Mins • 6 Exercises</p>
+                      <h4>{{ langService.isArabic() ? 'تمرين الصدر والترايسبس' : 'Chest & Triceps Hypertrophy' }}</h4>
+                      <p>{{ langService.isArabic() ? 'مولد ذكي • 45 دقيقة • 6 تمارين' : 'Smart Generator • 45 Mins • 6 Exercises' }}</p>
                     </div>
                   </div>
                   <button class="mock-play-btn"><i class="fa-solid fa-play"></i></button>
@@ -203,7 +211,7 @@ import { CommonModule } from '@angular/common';
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1.1fr 0.9fr;
       gap: 3.5rem;
       align-items: center;
     }
@@ -224,12 +232,14 @@ import { CommonModule } from '@angular/common';
       color: var(--text-secondary);
       line-height: 1.7;
       margin-bottom: 2.25rem;
-      max-width: 540px;
+      max-width: 580px;
     }
 
-    /* Store Buttons */
+    /* Store Buttons - Side By Side Horizontal Row Layout */
     .cta-group {
       display: flex;
+      flex-direction: row;
+      align-items: center;
       gap: 1rem;
       margin-bottom: 3rem;
       flex-wrap: wrap;
@@ -239,13 +249,14 @@ import { CommonModule } from '@angular/common';
       position: relative;
       display: flex;
       align-items: center;
-      gap: 0.9rem;
+      gap: 0.8rem;
       background: #141724;
       border: 1px solid rgba(255, 255, 255, 0.12);
-      padding: 0.75rem 1.6rem;
+      padding: 0.75rem 1.2rem;
       border-radius: 14px;
       color: #ffffff;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
     }
 
     .store-btn:hover {
@@ -256,7 +267,7 @@ import { CommonModule } from '@angular/common';
     }
 
     .store-icon {
-      font-size: 1.8rem;
+      font-size: 1.7rem;
     }
 
     .store-apple .store-icon {
@@ -273,7 +284,7 @@ import { CommonModule } from '@angular/common';
     }
 
     .store-text .sub {
-      font-size: 0.65rem;
+      font-size: 0.62rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--accent-mint);
@@ -281,7 +292,7 @@ import { CommonModule } from '@angular/common';
     }
 
     .store-text .main {
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
       font-family: var(--font-heading);
     }
@@ -292,7 +303,7 @@ import { CommonModule } from '@angular/common';
       color: var(--accent-red);
       padding: 0.2rem 0.5rem;
       border-radius: 6px;
-      margin-left: auto;
+      margin-left: 0.5rem;
       font-weight: 700;
       border: 1px solid rgba(230, 57, 70, 0.3);
     }
@@ -655,4 +666,6 @@ import { CommonModule } from '@angular/common';
     }
   `]
 })
-export class HeroComponent {}
+export class HeroComponent {
+  langService = inject(LanguageService);
+}

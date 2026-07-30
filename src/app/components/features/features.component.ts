@@ -1,13 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 interface FeatureItem {
   icon: string;
   badge: string;
+  badgeAr: string;
   badgeClass: string;
   title: string;
+  titleAr: string;
   description: string;
+  descriptionAr: string;
   highlights: string[];
+  highlightsAr: string[];
 }
 
 @Component({
@@ -21,11 +26,19 @@ interface FeatureItem {
         <!-- Section Header -->
         <div class="section-header">
           <div class="badge-pill badge-red">
-            <i class="fa-solid fa-layer-group"></i> Complete Fitness Ecosystem
+            <i class="fa-solid fa-layer-group"></i>
+            {{ langService.isArabic() ? 'منظومة رياضية متكاملة' : 'Complete Fitness Ecosystem' }}
           </div>
-          <h2>Designed For Maximum <span class="gradient-text-red">Results & Performance</span></h2>
+          <h2 *ngIf="!langService.isArabic()">
+            Designed For Maximum <span class="gradient-text-red">Results & Performance</span>
+          </h2>
+          <h2 *ngIf="langService.isArabic()">
+            مصممة لأعلى <span class="gradient-text-red">نتائج وأداء رياضي</span>
+          </h2>
           <p>
-            GetFit combines five core tracking engines into a sleek, offline-first mobile app experience engineered to help you conquer your physical potential.
+            {{ langService.isArabic() 
+                ? 'يجمع GetFit بين التمارين الذكية، تصوير الوجبات بالكاميرا، تتبع السعرات، والأنظمة الغذائية المخصصة لمساعدتك في تحقيق أقصى إمكانياتك البدنية.'
+                : 'GetFit combines smart routines, camera food scanning, calorie tracking, and customized diet plans into a sleek mobile app experience.' }}
           </p>
         </div>
 
@@ -36,14 +49,20 @@ interface FeatureItem {
               <div class="feat-icon-box" [ngClass]="feat.badgeClass">
                 <i [class]="feat.icon"></i>
               </div>
-              <span class="badge-pill" [ngClass]="feat.badgeClass">{{ feat.badge }}</span>
+              <span class="badge-pill" [ngClass]="feat.badgeClass">
+                {{ langService.isArabic() ? feat.badgeAr : feat.badge }}
+              </span>
             </div>
 
-            <h3 class="feat-title">{{ feat.title }}</h3>
-            <p class="feat-desc">{{ feat.description }}</p>
+            <h3 class="feat-title">
+              {{ langService.isArabic() ? feat.titleAr : feat.title }}
+            </h3>
+            <p class="feat-desc">
+              {{ langService.isArabic() ? feat.descriptionAr : feat.description }}
+            </p>
 
             <ul class="feat-checklist">
-              <li *ngFor="let point of feat.highlights">
+              <li *ngFor="let point of (langService.isArabic() ? feat.highlightsAr : feat.highlights)">
                 <i class="fa-solid fa-circle-check check-icon"></i>
                 <span>{{ point }}</span>
               </li>
@@ -167,77 +186,127 @@ interface FeatureItem {
   `]
 })
 export class FeaturesComponent {
+  langService = inject(LanguageService);
+
   features: FeatureItem[] = [
     {
       icon: 'fa-solid fa-dumbbell',
       badge: 'Smart Engine',
+      badgeAr: 'المحرك الذكي',
       badgeClass: 'badge-red',
       title: 'Smart Workout Routine & Substitutions',
+      titleAr: 'تمارين وتعديلات ذكية مخصصة',
       description: 'Generates customized gym and home workout routines tailored to your available equipment, goals, and skill level with automatic alternative exercise suggestions.',
+      descriptionAr: 'يولد جداول تمارين مخصصة للمنزل أو الجيم بناءً على أدواتك المتاحة، أهدافك، ومستواك البدني مع اقتراح بدائل تمارين أسهل وأنسب تلقائياً.',
       highlights: [
         'Dynamic Exercise Substitutions',
         'Built-in Rest Timers & Audio Cues',
         'Detailed Form Guidelines & Videos'
+      ],
+      highlightsAr: [
+        'بدائل تمارين مخصصة تلقائية',
+        'مؤقت راحة وتنبيهات صوتية مدمجة',
+        'شرح فيديو وتوجيهات للأداء الصحيح'
       ]
     },
     {
       icon: 'fa-solid fa-shoe-prints',
       badge: 'Step Tracker',
+      badgeAr: 'متتبع الخطوات',
       badgeClass: 'badge-mint',
       title: 'Precision Pedometer & Health Sync',
+      titleAr: 'عداد خطوات دقيق ومزامنة صحية',
       description: 'Ultra-low battery background step counter using device pedometer hardware and native health services for real-time distance and active calorie estimation.',
+      descriptionAr: 'عداد خطوات خلفي دقيق وموفر للبطارية يتعامل مباشرة مع حساسات الموبايل لحساب المسافة والسعرات المحروقة بدقة.',
       highlights: [
         'Zero Battery Drain Background Tracking',
         'Apple Health & Google Fit Sync',
         'Daily Milestones & Streak Counter'
+      ],
+      highlightsAr: [
+        'تتبع خلفي موفر جداً للبطارية',
+        'مزامنة مع Apple Health و Google Fit',
+        'حساب الإنجاز اليومي وسلسلة الاستمرارية'
       ]
     },
     {
-      icon: 'fa-solid fa-apple-whole',
-      badge: 'Nutrition',
+      icon: 'fa-solid fa-utensils',
+      badge: 'Custom Diet & Swaps',
+      badgeAr: 'دايت مخصص وتبديل الأكل',
       badgeClass: 'badge-purple',
-      title: 'Macro Calorie Counter & Diet Generator',
-      description: 'Keep track of your protein, carbs, and fats breakdown. Generate customized meal plans based on your target weight, TDEE, and dietary preferences.',
+      title: 'Customized Diet Plans & Instant Meal Swapping',
+      titleAr: 'أنظمة تغذية مخصصة + تبديل أي صنف بضغطة زر',
+      description: 'Design a diet plan built around your calories and physical goal. Include your favorite foods, exclude foods you dislike, and instantly swap any meal item for a healthy alternative anytime.',
+      descriptionAr: 'صمم خطتك الغذائية المخصصة بدقة حسب هدفك البدني وسعراتك اليومية. أضف وجباتك وأطعمتك المفضلة واستبعد الأطعمة التي لا تحبها، مع إمكانية تبديل أي صنف وجبة بأطعمة صحية أخرى متكافئة في أي وقت بضغطة زر واحدة.',
       highlights: [
-        'Custom Macro Breakdown Graphs',
-        'Smart Recipe & Meal Replacement Engine',
-        'Personalized TDEE & Calorie Target'
+        'Personalized Calorie & Target Split',
+        'Include Favorite Foods & Exclude Hated Foods',
+        '1-Tap Instant Healthy Meal Swapping'
+      ],
+      highlightsAr: [
+        'نظام مخصص لسعراتك وهدفك البدني',
+        'إضافة أطعمتك المفضلة واستبعاد ما لا تحبه',
+        'تبديل فوري لأي صنف بأكل صحي متكافئ'
+      ]
+    },
+    {
+      icon: 'fa-solid fa-camera-retro',
+      badge: 'AI Food Scanner',
+      badgeAr: 'ماكينة السعرات بالذكاء الاصطناعي',
+      badgeClass: 'badge-gold',
+      title: 'AI Photo & Text Calorie Scanner',
+      titleAr: 'صوّر وجبتك بالكاميرا أو اكتب مكوناتها نصياً',
+      description: 'Snap a photo of your meal or write its ingredients in plain text. GetFit’s AI vision engine automatically recognizes all food components, calculates total calories, and breaks down protein, carbs, and fats with high precision.',
+      descriptionAr: 'التقط صورة لطبقك بالكاميرا أو اكتب مكونات الوجبة نصياً، وسيقوم الذكاء الاصطناعي فوراً بفك شفرة مكونات الأكل، وحساب إجمالي السعرات الحرارية وتقسيم البروتين والدهون والنشويات بدقة عالية.',
+      highlights: [
+        'Instant Photo Food Recognition',
+        'Plain Text Meal Description Scanner',
+        'Automatic Calorie & Macro Breakdown'
+      ],
+      highlightsAr: [
+        'تعرف فوري على الأكل بالصور والكاميرا',
+        'تحليل السعرات بالوصف النصي للوجبة',
+        'حساب تلقائي دقيق للسعرات والمكرو'
       ]
     },
     {
       icon: 'fa-solid fa-droplet',
       badge: 'Hydration',
+      badgeAr: 'التروية والمياه',
       badgeClass: 'badge-cyan',
       title: 'Visual Water Tracker & Smart Alerts',
+      titleAr: 'متتبع شرب المياه وتنبيهات منتظمة',
       description: 'Maintain optimal hydration levels with instant visual progress logging, customizable daily water goals, and smart interval notifications.',
+      descriptionAr: 'حافظ على تروية جسمك مع تسجيل مرئي سريع لشرب المياه، وأهداف يومية وتنبيهات ذكية مذكرة.',
       highlights: [
         'Quick-Add Preset Volume Buttons',
         'Visual Hydration Goal Progress',
         'Customizable Reminder Schedule'
-      ]
-    },
-    {
-      icon: 'fa-solid fa-trophy',
-      badge: 'Social Rank',
-      badgeClass: 'badge-gold',
-      title: 'Global Community Leaderboard',
-      description: 'Earn experience points for workouts, steps, and hydration logs. Rise through global ranks and unlock shiny Gold, Silver, and Bronze achievement badges.',
-      highlights: [
-        'Real-Time Global & Friend Rankings',
-        'Collectible Achievement Medals',
-        'Community Weekly Challenges'
+      ],
+      highlightsAr: [
+        'أزرار سريعة لإضافة كميات المياه',
+        'مؤشر مرئي لنسبة الانتهاء من الهدف',
+        'جدول تنبيهات مخصص حسب رغبتك'
       ]
     },
     {
       icon: 'fa-solid fa-shield-halved',
       badge: 'Privacy First',
+      badgeAr: 'الخصوصية أولاً',
       badgeClass: 'badge-red',
-      title: '100% Offline-First Architecture',
-      description: 'Your health data belongs to you. GetFit runs completely offline with instant local SQLite synchronization and zero cloud dependency unless requested.',
+      title: '100% Secure & Private Architecture',
+      titleAr: 'بنية آمنة ومشفرة 100%',
+      description: 'Your health data belongs to you. GetFit keeps your personal information protected with ultra-fast synchronization and complete privacy control.',
+      descriptionAr: 'بياناتك الصحية ملكك وحدك. يحافظ GetFit على خصوصيتك مع مزامنة سريعة للغاية وتشغيل آمن دون أي تتبع.',
       highlights: [
         'Zero Data Sales or Tracking',
         'Instant Local Storage Load Times',
         'Seamless Cloud Backup Option'
+      ],
+      highlightsAr: [
+        'لا يتم بيع أو مشاركة أي بيانات شخصية',
+        'سرعة فتح فائقة باستخدام التخزين المحلي',
+        'نسخ احتياطي سحابي آمن ومباشر'
       ]
     }
   ];

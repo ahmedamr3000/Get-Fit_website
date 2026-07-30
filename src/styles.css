@@ -274,3 +274,24 @@ a {
     font-size: 1rem;
   }
 }
+
+/* Arabic Font & RTL Global Styles */
+html[lang="ar"] body {
+  font-family: 'Alexandria', 'Plus Jakarta Sans', sans-serif;
+}
+
+html[lang="ar"] h1,
+html[lang="ar"] h2,
+html[lang="ar"] h3,
+html[lang="ar"] h4,
+html[lang="ar"] h5,
+html[lang="ar"] h6 {
+  font-family: 'Alexandria', 'Outfit', sans-serif;
+}
+
+html[dir="rtl"] .store-tag,
+html[dir="rtl"] .save-badge {
+  margin-left: initial;
+  margin-right: auto;
+}
+

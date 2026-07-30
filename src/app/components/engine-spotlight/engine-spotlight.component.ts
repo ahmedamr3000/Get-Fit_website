@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-engine-spotlight',
@@ -11,37 +12,57 @@ import { CommonModule } from '@angular/common';
         <div class="ai-banner glass-card">
           <div class="ai-content">
             <div class="badge-pill badge-purple mb-3">
-              <i class="fa-solid fa-microchip"></i> Smart Fitness Engine
+              <i class="fa-solid fa-microchip"></i>
+              {{ langService.isArabic() ? 'المحرك الرياضي الذكي' : 'Smart Fitness Engine' }}
             </div>
 
-            <h2>Powered By <span class="gradient-text-purple">Intelligent Offline Core</span></h2>
+            <h2 *ngIf="!langService.isArabic()">
+              Powered By <span class="gradient-text-purple">Intelligent Smart Core</span>
+            </h2>
+            <h2 *ngIf="langService.isArabic()">
+              مدعوم بنظام <span class="gradient-text-purple">الذكاء والتحليل البرمجي</span>
+            </h2>
 
             <p class="ai-desc">
-              GetFit doesn't just log numbers — it understands your body's progression. Our embedded smart algorithms analyze your workout fatigue, equipment availability, and nutrition goals to deliver real-time recommendations completely offline.
+              {{ langService.isArabic() 
+                  ? 'تطبيق GetFit لا يسجل الأرقام فقط، بل يفهم تطور جسمك ومستواك. تحلل خوارزمياتنا الذكية الإجهاد والأدوات المتاحة وأهدافك لتقديم توصيات مباشرة.'
+                  : "GetFit doesn't just log numbers — it understands your body's progression. Our embedded smart algorithms analyze your workout fatigue, equipment availability, and nutrition goals to deliver real-time recommendations." }}
             </p>
 
             <div class="ai-features-list">
               <div class="ai-item">
                 <div class="ai-icon-box"><i class="fa-solid fa-shuffle"></i></div>
                 <div>
-                  <h4>Smart Exercise Substitution</h4>
-                  <p>Gym machine occupied? Tap substitute and get instant biomechanically equivalent alternatives.</p>
+                  <h4>{{ langService.isArabic() ? 'تبديل التمارين الذكي' : 'Smart Exercise Substitution' }}</h4>
+                  <p>
+                    {{ langService.isArabic() 
+                        ? 'الجهاز مشغول في الجيم؟ اضغط تبديل واحصل على بديل حيوي مباشر بنفس الكفاءة والعضلة المستهدفة.' 
+                        : 'Gym machine occupied? Tap substitute and get instant biomechanically equivalent alternatives.' }}
+                  </p>
                 </div>
               </div>
 
               <div class="ai-item">
                 <div class="ai-icon-box"><i class="fa-solid fa-bolt"></i></div>
                 <div>
-                  <h4>Instant Offline Synchronization</h4>
-                  <p>Works in underground gyms, mountain trails, or airplane mode with 0ms UI latency.</p>
+                  <h4>{{ langService.isArabic() ? 'مزامنة فائقة السرعة' : 'Instant Data Synchronization' }}</h4>
+                  <p>
+                    {{ langService.isArabic() 
+                        ? 'أداء فائق مع تحديثات لحظية وتفاعل بدون أي تأخير في الشاشة (0ms).' 
+                        : 'Lightning-fast performance with real-time updates and 0ms UI latency.' }}
+                  </p>
                 </div>
               </div>
 
               <div class="ai-item">
                 <div class="ai-icon-box"><i class="fa-solid fa-chart-line"></i></div>
                 <div>
-                  <h4>Adaptive Progressive Overload</h4>
-                  <p>Automatically calculates weight increases based on your RPE and previous set completion.</p>
+                  <h4>{{ langService.isArabic() ? 'زيادة الأحمال التدريجية المتكيفة' : 'Adaptive Progressive Overload' }}</h4>
+                  <p>
+                    {{ langService.isArabic() 
+                        ? 'يحسب زيادة الأوزان والتكرارات تلقائياً بناءً على إنجازك وتقييم الإجهاد في الجلسات السابقة.' 
+                        : 'Automatically calculates weight increases based on your RPE and previous set completion.' }}
+                  </p>
                 </div>
               </div>
             </div>
@@ -58,7 +79,7 @@ import { CommonModule } from '@angular/common';
                 <span class="code-line"><span class="k">const</span> equipment = [<span class="s">"Dumbbells"</span>, <span class="s">"Pullup Bar"</span>];</span>
                 <span class="code-line"><span class="k">const</span> workout = <span class="f">generateSmartRoutine</span>(&#123; goal, equipment &#125;);</span>
                 <span class="code-line text-mint">// Output: 4-Week Custom Split Ready</span>
-                <span class="code-line text-purple">// Status: Offline Engine Loaded (0ms)</span>
+                <span class="code-line text-purple">// Status: Smart Engine Loaded (0ms)</span>
               </div>
             </div>
           </div>
@@ -166,4 +187,6 @@ import { CommonModule } from '@angular/common';
     }
   `]
 })
-export class EngineSpotlightComponent {}
+export class EngineSpotlightComponent {
+  langService = inject(LanguageService);
+}

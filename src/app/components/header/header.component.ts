@@ -1,5 +1,6 @@
-import { Component, HostListener, signal } from '@angular/core';
+import { Component, HostListener, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-header',
@@ -24,19 +25,36 @@ import { CommonModule } from '@angular/common';
 
         <!-- Desktop Navigation -->
         <nav class="desktop-nav">
-          <a href="#features" class="nav-link">Features</a>
-          <a href="#showcase" class="nav-link">App Showcase</a>
-          <a href="#engine" class="nav-link">Smart Engine</a>
-          <a href="#testimonials" class="nav-link">Reviews</a>
-          <a href="#pre-register" class="nav-link">Pre-Register</a>
+          <a href="#features" class="nav-link">
+            {{ langService.isArabic() ? 'المميزات الأساسية' : 'Core Features' }}
+          </a>
+          <a href="#showcase" class="nav-link">
+            {{ langService.isArabic() ? 'استعراض التطبيق' : 'App Showcase' }}
+          </a>
+          <a href="#pricing" class="nav-link">
+            {{ langService.isArabic() ? 'الأسعار (ج.م)' : 'Pricing (EGP)' }}
+          </a>
+          <a href="#pre-register" class="nav-link">
+            {{ langService.isArabic() ? 'التسجيل المسبق' : 'Pre-Register' }}
+          </a>
         </nav>
 
-        <!-- CTA Button -->
+        <!-- CTA Button & Language Switcher -->
         <div class="header-actions">
+          <button
+            class="lang-switch-btn"
+            (click)="langService.toggleLanguage()"
+            [attr.title]="langService.isArabic() ? 'Switch to English' : 'التحويل للعربية'"
+          >
+            <i class="fa-solid fa-globe"></i>
+            <span>{{ langService.isArabic() ? 'English' : 'العربية' }}</span>
+          </button>
+
           <a href="#pre-register" class="btn-primary header-btn">
-            <i class="fa-solid fa-rocket"></i> Early Access
+            <i class="fa-solid fa-rocket"></i>
+            {{ langService.isArabic() ? 'الوصول المبكر' : 'Early Access' }}
           </a>
-          
+
           <!-- Mobile Menu Button -->
           <button
             class="mobile-toggle"
@@ -57,16 +75,30 @@ import { CommonModule } from '@angular/common';
       <!-- Mobile Navigation Drawer -->
       <div class="mobile-drawer" [class.open]="isMobileMenuOpen()">
         <nav class="mobile-nav">
-          <a href="#features" (click)="closeMobileMenu()">Features</a>
-          <a href="#showcase" (click)="closeMobileMenu()">App Showcase</a>
-          <a href="#engine" (click)="closeMobileMenu()">Smart Engine</a>
-          <a href="#testimonials" (click)="closeMobileMenu()">Reviews</a>
+          <a href="#features" (click)="closeMobileMenu()">
+            {{ langService.isArabic() ? 'المميزات الأساسية' : 'Core Features' }}
+          </a>
+          <a href="#showcase" (click)="closeMobileMenu()">
+            {{ langService.isArabic() ? 'استعراض التطبيق' : 'App Showcase' }}
+          </a>
+          <a href="#pricing" (click)="closeMobileMenu()">
+            {{ langService.isArabic() ? 'الأسعار (ج.م)' : 'Pricing (EGP)' }}
+          </a>
+
+          <button
+            class="lang-switch-btn mobile-lang-btn"
+            (click)="langService.toggleLanguage(); closeMobileMenu()"
+          >
+            <i class="fa-solid fa-globe"></i>
+            <span>{{ langService.isArabic() ? 'English' : 'تغيير اللغة إلى العربية' }}</span>
+          </button>
+
           <a
             href="#pre-register"
             (click)="closeMobileMenu()"
             class="btn-primary drawer-btn"
           >
-            Pre-Register Now
+            {{ langService.isArabic() ? 'سجل الآن في الوصول المبكر' : 'Pre-Register Now' }}
           </a>
         </nav>
       </div>
@@ -165,6 +197,27 @@ import { CommonModule } from '@angular/common';
         gap: 1rem;
       }
 
+      .lang-switch-btn {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        color: #ffffff;
+        padding: 0.55rem 1rem;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        transition: all 0.3s ease;
+      }
+
+      .lang-switch-btn:hover {
+        background: rgba(230, 57, 70, 0.2);
+        border-color: var(--accent-red);
+        color: #ffffff;
+      }
+
       .header-btn {
         padding: 0.65rem 1.4rem;
         font-size: 0.9rem;
@@ -210,6 +263,12 @@ import { CommonModule } from '@angular/common';
         color: var(--text-primary);
       }
 
+      .mobile-lang-btn {
+        justify-content: center;
+        padding: 0.8rem;
+        margin-top: 0.5rem;
+      }
+
       .drawer-btn {
         margin-top: 0.5rem;
         text-align: center;
@@ -230,6 +289,7 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class HeaderComponent {
+  langService = inject(LanguageService);
   isScrolled = signal(false);
   isMobileMenuOpen = signal(false);
 
