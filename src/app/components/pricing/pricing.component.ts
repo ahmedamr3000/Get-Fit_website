@@ -780,18 +780,21 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
       .price-box {
         display: flex;
         align-items: baseline;
-        gap: 0.5rem;
+        gap: 0.4rem;
+        flex-wrap: nowrap;
+        white-space: nowrap;
       }
 
       .price-box .currency {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 800;
         color: var(--accent-red);
+        white-space: nowrap;
       }
 
       .price-box .amount {
         font-family: var(--font-heading);
-        font-size: 3rem;
+        font-size: 2.6rem;
         font-weight: 900;
         color: #ffffff;
         line-height: 1;
@@ -799,9 +802,10 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
       }
 
       .price-box .period {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         color: var(--text-muted);
         font-weight: 600;
+        white-space: nowrap;
       }
 
       .egp-arabic {
