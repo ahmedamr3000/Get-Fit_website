@@ -399,14 +399,14 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
                   Not satisfied? Request a full refund within 14 days under our
                   <a (click)="openRefundModal()" class="policy-link"
                     >Refund Policy</a
-                  >.
+                  > (Ref Phone: <strong>01069873931</strong>).
                 </p>
                 <p *ngIf="langService.isArabic()">
                   غير راضٍ عن الخدمة؟ يمكنك طلب استرداد كامل المبلغ خلال 14
                   يوماً وفقاً لـ
                   <a (click)="openRefundModal()" class="policy-link"
                     >سياسة الاسترجاع والرد</a
-                  >.
+                  > (الرقم المرجعي: <strong>01069873931</strong>).
                 </p>
               </div>
             </div>
@@ -503,7 +503,7 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
             <p>
               <i class="fa-solid fa-circle-info"></i> For any billing
               assistance, contact customer care at support&#64;getfit-app.com or
-              call our Egypt Hotline: +20 100 000 0000.
+              call our Reference Phone: <strong>01069873931</strong> (+20 106 987 3931).
             </p>
           </div>
         </div>
@@ -578,9 +578,8 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
 
           <div class="policy-footer-note">
             <p>
-              <i class="fa-solid fa-circle-info"></i> لأي استفسارات مالية، تواصل
-              مع فريق الدعم عبر البريد support&#64;getfit-app.com أو عبر الخط
-              الساخن: 0000 000 100 20+.
+              <i class="fa-solid fa-circle-info"></i> لأي استفسارات مالية أو طلبات الاسترجاع، تواصل
+              مع فريق الدعم عبر البريد support&#64;getfit-app.com أو عبر الرقم المرجعي للدعم: <strong>01069873931</strong> (01069873931 20+).
             </p>
           </div>
         </div>
