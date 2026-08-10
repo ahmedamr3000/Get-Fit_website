@@ -399,16 +399,31 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
                   Not satisfied? Request a full refund within 14 days under our
                   <a (click)="openRefundModal()" class="policy-link"
                     >Refund Policy</a
-                  > (Ref Phone: <strong>01069873931</strong>).
+                  >.
                 </p>
                 <p *ngIf="langService.isArabic()">
                   غير راضٍ عن الخدمة؟ يمكنك طلب استرداد كامل المبلغ خلال 14
                   يوماً وفقاً لـ
                   <a (click)="openRefundModal()" class="policy-link"
                     >سياسة الاسترجاع والرد</a
-                  > (الرقم المرجعي: <strong>01069873931</strong>).
+                  >.
                 </p>
               </div>
+            </div>
+
+            <!-- Standalone Reference Number Badge -->
+            <div class="ref-number-badge">
+              <i class="fa-solid fa-headset ref-icon"></i>
+              <span class="ref-label">
+                {{
+                  langService.isArabic()
+                    ? 'الرقم المرجعي للدعم:'
+                    : 'Support Reference Phone:'
+                }}
+              </span>
+              <a href="tel:01069873931" class="ref-phone-link">
+                <strong class="ref-value">01069873931</strong>
+              </a>
             </div>
           </div>
         </div>
@@ -503,7 +518,7 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
             <p>
               <i class="fa-solid fa-circle-info"></i> For any billing
               assistance, contact customer care at support&#64;getfit-app.com or
-              call our Reference Phone: <strong>01069873931</strong> (+20 106 987 3931).
+              call our Reference Phone: <strong>01069873931</strong> (<span dir="ltr">+20 106 987 3931</span>).
             </p>
           </div>
         </div>
@@ -579,7 +594,7 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
           <div class="policy-footer-note">
             <p>
               <i class="fa-solid fa-circle-info"></i> لأي استفسارات مالية أو طلبات الاسترجاع، تواصل
-              مع فريق الدعم عبر البريد support&#64;getfit-app.com أو عبر الرقم المرجعي للدعم: <strong>01069873931</strong> (01069873931 20+).
+              مع فريق الدعم عبر البريد support&#64;getfit-app.com أو عبر الرقم المرجعي للدعم: <strong>01069873931</strong> (<span dir="ltr">+20 106 987 3931</span>).
             </p>
           </div>
         </div>
@@ -855,14 +870,18 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
 
       .trust-info {
         display: flex;
-        justify-content: center;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        flex-wrap: wrap;
       }
 
       .trust-item {
         display: flex;
         align-items: flex-start;
         gap: 1rem;
-        max-width: 600px;
+        max-width: 620px;
+        flex: 1 1 320px;
       }
 
       .trust-icon {
@@ -879,12 +898,63 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
       .trust-item p {
         font-size: 0.9rem;
         color: var(--text-secondary);
+        margin: 0;
       }
 
       .policy-link {
         color: var(--accent-mint);
         text-decoration: underline;
         cursor: pointer;
+      }
+
+      /* Standalone Highlighted Reference Badge */
+      .ref-number-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: rgba(6, 214, 160, 0.08);
+        border: 1px solid rgba(6, 214, 160, 0.25);
+        border-radius: 12px;
+        padding: 0.65rem 1.1rem;
+        backdrop-filter: blur(8px);
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(6, 214, 160, 0.08);
+        flex-shrink: 0;
+      }
+
+      .ref-number-badge:hover {
+        background: rgba(6, 214, 160, 0.15);
+        border-color: rgba(6, 214, 160, 0.45);
+        transform: translateY(-1px);
+        box-shadow: 0 6px 18px rgba(6, 214, 160, 0.18);
+      }
+
+      .ref-icon {
+        color: var(--accent-mint);
+        font-size: 1.05rem;
+      }
+
+      .ref-label {
+        color: var(--text-secondary);
+        font-size: 0.88rem;
+        font-weight: 500;
+      }
+
+      .ref-phone-link {
+        text-decoration: none;
+      }
+
+      .ref-value {
+        color: var(--accent-mint);
+        font-size: 0.98rem;
+        letter-spacing: 0.5px;
+        background: rgba(6, 214, 160, 0.18);
+        padding: 0.2rem 0.6rem;
+        border-radius: 6px;
+        font-family: monospace;
+        font-weight: 700;
+        direction: ltr;
+        display: inline-block;
       }
 
       /* Modal Overlay & Styling */
