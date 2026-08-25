@@ -1,16 +1,18 @@
 import { Component, HostListener, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
+import { AdminAuthService } from '../../services/admin-auth.service';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   template: `
     <header [class.scrolled]="isScrolled()" class="site-header">
       <div class="container header-container">
         <!-- Logo -->
-        <a href="#" class="logo">
+        <a routerLink="/" class="logo">
           <div class="logo-icon">
             <img
               src="./Gemini_Generated_Image_ecet84ecet84ecet.png"
@@ -37,6 +39,15 @@ import { LanguageService } from '../../services/language.service';
           <a href="#pre-register" class="nav-link">
             {{ langService.isArabic() ? 'التسجيل المسبق' : 'Pre-Register' }}
           </a>
+
+          <!-- HIDDEN DASHBOARD TAB: Visible ONLY when Admin is authenticated -->
+          @if (authService.isLoggedIn()) {
+            <a routerLink="/ahmedamr/dashboard" class="nav-link admin-dashboard-link">
+              <i class="fa-solid fa-crown"></i>
+              <span>{{ langService.isArabic() ? 'لوحة التحكم' : 'Dashboard' }}</span>
+              <span class="admin-badge">ADMIN</span>
+            </a>
+          }
         </nav>
 
         <!-- CTA Button & Language Switcher -->
@@ -50,10 +61,18 @@ import { LanguageService } from '../../services/language.service';
             <span>{{ langService.isArabic() ? 'English' : 'العربية' }}</span>
           </button>
 
-          <a href="#pre-register" class="btn-primary header-btn">
-            <i class="fa-solid fa-rocket"></i>
-            {{ langService.isArabic() ? 'الوصول المبكر' : 'Early Access' }}
-          </a>
+          <!-- Dashboard Direct Quick Button if logged in -->
+          @if (authService.isLoggedIn()) {
+            <a routerLink="/ahmedamr/dashboard" class="btn-secondary header-btn admin-btn">
+              <i class="fa-solid fa-gauge-high"></i>
+              {{ langService.isArabic() ? 'لوحة الإدارة' : 'Dashboard' }}
+            </a>
+          } @else {
+            <a href="#pre-register" class="btn-primary header-btn">
+              <i class="fa-solid fa-rocket"></i>
+              {{ langService.isArabic() ? 'الوصول المبكر' : 'Early Access' }}
+            </a>
+          }
 
           <!-- Mobile Menu Button -->
           <button
@@ -85,6 +104,13 @@ import { LanguageService } from '../../services/language.service';
             {{ langService.isArabic() ? 'الأسعار (ج.م)' : 'Pricing (EGP)' }}
           </a>
 
+          @if (authService.isLoggedIn()) {
+            <a routerLink="/ahmedamr/dashboard" (click)="closeMobileMenu()" class="mobile-admin-link">
+              <i class="fa-solid fa-crown text-gold"></i>
+              <span>{{ langService.isArabic() ? 'لوحة تحكم الإدارة' : 'Admin Mission Control' }}</span>
+            </a>
+          }
+
           <button
             class="lang-switch-btn mobile-lang-btn"
             (click)="langService.toggleLanguage(); closeMobileMenu()"
@@ -93,13 +119,24 @@ import { LanguageService } from '../../services/language.service';
             <span>{{ langService.isArabic() ? 'English' : 'تغيير اللغة إلى العربية' }}</span>
           </button>
 
-          <a
-            href="#pre-register"
-            (click)="closeMobileMenu()"
-            class="btn-primary drawer-btn"
-          >
-            {{ langService.isArabic() ? 'سجل الآن في الوصول المبكر' : 'Pre-Register Now' }}
-          </a>
+          @if (authService.isLoggedIn()) {
+            <a
+              routerLink="/ahmedamr/dashboard"
+              (click)="closeMobileMenu()"
+              class="btn-primary drawer-btn"
+            >
+              <i class="fa-solid fa-gauge-high"></i>
+              {{ langService.isArabic() ? 'دخول لوحة التحكم' : 'Go to Dashboard' }}
+            </a>
+          } @else {
+            <a
+              href="#pre-register"
+              (click)="closeMobileMenu()"
+              class="btn-primary drawer-btn"
+            >
+              {{ langService.isArabic() ? 'سجل الآن في الوصول المبكر' : 'Pre-Register Now' }}
+            </a>
+          }
         </nav>
       </div>
     </header>
@@ -169,6 +206,9 @@ import { LanguageService } from '../../services/language.service';
         font-weight: 500;
         color: var(--text-secondary);
         position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
       }
 
       .nav-link::after {
@@ -189,6 +229,25 @@ import { LanguageService } from '../../services/language.service';
 
       .nav-link:hover::after {
         width: 100%;
+      }
+
+      .admin-dashboard-link {
+        color: #ffd700 !important;
+        font-weight: 700;
+      }
+
+      .admin-dashboard-link i {
+        color: #ffd700;
+      }
+
+      .admin-badge {
+        font-size: 0.65rem;
+        background: rgba(255, 215, 0, 0.2);
+        color: #ffd700;
+        border: 1px solid rgba(255, 215, 0, 0.4);
+        padding: 0.1rem 0.4rem;
+        border-radius: 4px;
+        letter-spacing: 0.5px;
       }
 
       .header-actions {
@@ -221,6 +280,17 @@ import { LanguageService } from '../../services/language.service';
       .header-btn {
         padding: 0.65rem 1.4rem;
         font-size: 0.9rem;
+      }
+
+      .admin-btn {
+        background: rgba(255, 215, 0, 0.15);
+        border-color: rgba(255, 215, 0, 0.4);
+        color: #ffd700;
+      }
+
+      .admin-btn:hover {
+        background: rgba(255, 215, 0, 0.25);
+        color: #ffffff;
       }
 
       .mobile-toggle {
@@ -263,6 +333,13 @@ import { LanguageService } from '../../services/language.service';
         color: var(--text-primary);
       }
 
+      .mobile-admin-link {
+        color: #ffd700 !important;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
       .mobile-lang-btn {
         justify-content: center;
         padding: 0.8rem;
@@ -272,6 +349,10 @@ import { LanguageService } from '../../services/language.service';
       .drawer-btn {
         margin-top: 0.5rem;
         text-align: center;
+      }
+
+      .text-gold {
+        color: #ffd700;
       }
 
       @media (max-width: 992px) {
@@ -290,6 +371,7 @@ import { LanguageService } from '../../services/language.service';
 })
 export class HeaderComponent {
   langService = inject(LanguageService);
+  authService = inject(AdminAuthService);
   isScrolled = signal(false);
   isMobileMenuOpen = signal(false);
 

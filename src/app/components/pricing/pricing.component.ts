@@ -34,6 +34,19 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
                 : 'Choose your preferred billing cycle (Monthly, 3 Months, 6 Months, or 1 Year). Cancel anytime with our 14-day refund guarantee.'
             }}
           </p>
+
+          <!-- Referral Program Promo Callout Banner -->
+          <div class="referral-promo-banner glass-card mt-3 mb-4">
+            <div class="referral-promo-content">
+              <span class="promo-badge"><i class="fa-solid fa-gift"></i> {{ langService.isArabic() ? 'برنامج الإحالة والمكافآت' : 'Referral Rewards' }}</span>
+              <p class="promo-text mb-0">
+                <strong>{{ langService.isArabic() ? 'احصل على خصم 20% علي اشتراك الجولد باستعمال كود إحالة!' : 'Get 20% OFF Gold Subscription with any Referral Code!' }}</strong>
+                <span class="d-block text-muted small mt-1">
+                  {{ langService.isArabic() ? 'وحين تقوم بدعوة 5 أصدقاء ويفتحون التطبيق لـ 7 أيام متتالية، تحصل على خصم 50% على اشتراك الـ Gold 🎉' : 'Invite 5 friends who use the app for 7 consecutive days to unlock a 50% OFF Gold Subscription reward! 🎉' }}
+                </span>
+              </p>
+            </div>
+          </div>
         </div>
 
         <!-- Billing Cycle Tabs (Monthly, 3 Months, 6 Months, Annual) -->
@@ -1096,6 +1109,32 @@ type BillingCycle = 'monthly' | '3months' | '6months' | 'annual';
 
       .modal-ok-btn {
         padding: 0.6rem 2rem;
+      }
+
+      .referral-promo-banner {
+        max-width: 700px;
+        margin: 1.5rem auto;
+        padding: 1.25rem 1.5rem;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(230, 57, 70, 0.1) 100%);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        box-shadow: 0 8px 24px rgba(255, 215, 0, 0.1);
+      }
+
+      .promo-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #ffd700;
+        background: rgba(255, 215, 0, 0.15);
+        border-radius: 20px;
+        margin-bottom: 0.5rem;
+      }
+
+      .promo-text strong {
+        color: #fff;
+        font-size: 1rem;
       }
 
       @media (max-width: 992px) {
