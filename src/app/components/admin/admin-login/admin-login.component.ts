@@ -470,7 +470,7 @@ export class AdminLoginComponent {
     this.showPassword.update((v) => !v);
   }
 
-  onSubmit(): void {
+  async onSubmit(): Promise<void> {
     if (!this.email || !this.password) {
       this.errorMessage.set('Please enter both email and password.');
       return;
@@ -479,16 +479,13 @@ export class AdminLoginComponent {
     this.isLoading.set(true);
     this.errorMessage.set(null);
 
-    // Simulate quick security handshake
-    setTimeout(() => {
-      const res = this.authService.login(this.email, this.password);
-      this.isLoading.set(false);
+    const res = await this.authService.login(this.email, this.password);
+    this.isLoading.set(false);
 
-      if (res.success) {
-        this.router.navigate(['/ahmedamr/dashboard']);
-      } else {
-        this.errorMessage.set(res.message || 'Login failed.');
-      }
-    }, 600);
+    if (res.success) {
+      this.router.navigate(['/ahmedamr/dashboard']);
+    } else {
+      this.errorMessage.set(res.message || 'Login failed.');
+    }
   }
 }

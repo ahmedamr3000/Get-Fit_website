@@ -3074,16 +3074,24 @@ export class DashboardComponent implements OnInit {
   }
 
   onChangePassword(): void {
-    if (!this.newAdminPass || this.newAdminPass.length < 6) {
-      this.showToast(this.langService.isArabic() ? 'كلمة المرور يجب أن لا تقل عن 6 أحرف' : 'Password must be at least 6 characters');
+    if (!this.newAdminPass || this.newAdminPass.length < 8) {
+      this.showToast(this.langService.isArabic() ? 'كلمة المرور يجب أن لا تقل عن 8 أحرف' : 'Password must be at least 8 characters');
       return;
     }
     if (this.newAdminPass !== this.confirmAdminPass) {
       this.showToast(this.langService.isArabic() ? 'كلمتا المرور غير متطابقتين' : 'Passwords do not match');
       return;
     }
-    this.authService.updatePassword(this.newAdminPass);
-    this.showToast(this.langService.isArabic() ? 'تم تحديث كلمة المرور بنجاح!' : 'Master Password updated successfully!');
+    const updated = this.authService.updatePassword(this.newAdminPass);
+    if (updated) {
+      this.showToast(this.langService.isArabic() ? 'تم تحديث كلمة المرور بنجاح!' : 'Master Password updated successfully!');
+    } else {
+      this.showToast(
+        this.langService.isArabic()
+          ? 'تغيير كلمة مرور الإدارة يتم عبر متغير البيئة ADMIN_PASSWORD_HASH على الخادم فقط.'
+          : 'Admin password rotation must be configured via server ADMIN_PASSWORD_HASH.'
+      );
+    }
     this.newAdminPass = '';
     this.confirmAdminPass = '';
   }
